@@ -1,3 +1,29 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from drf_spectacular.utils import extend_schema
+from rest_framework import mixins, viewsets, status
+from rest_framework import permissions
+from rest_framework.response import Response
 
-# Create your views here.
+from list.models import List
+from list.serializers import ListSerializer
+
+class ListViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = List.objects.all()
+    serializer_class = ListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    # http_method_names = ['post']
+
+    def get_user_lists(self, request):
+        lists = List.objects.filter(user=request.user)
+        serializer = ListSerializer(lists,many=True)
+
+        return JsonResponse({
+            "lists":serializer.data
+        }, status=status.HTTP_200_OK)
+
+
+
+
+
+    
+     
