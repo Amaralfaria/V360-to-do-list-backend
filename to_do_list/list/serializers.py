@@ -4,13 +4,13 @@ from list.models import (
     ListItem
 )
 
-class ListSerializer(serializers.Serializer):
+class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
         fields = '__all__'
         read_only_fields = ['id']
 
-class ListItemSerializer(serializers.Serializer):
+class ListItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListItem
         fields = '__all__'
