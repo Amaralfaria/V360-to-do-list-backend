@@ -17,6 +17,7 @@ class CreateUsuarioView(mixins.RetrieveModelMixin, mixins.CreateModelMixin, view
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             print(request.data)
+            #a
             user = serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         else:
