@@ -6,8 +6,6 @@ from user.models import (
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.ReadOnlyField()
-
     class Meta:
         model = User
         fields = '__all__'
@@ -16,4 +14,4 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email','password']
+        fields = ['username','password']
