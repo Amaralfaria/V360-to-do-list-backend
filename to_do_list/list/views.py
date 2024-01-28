@@ -100,6 +100,26 @@ class ListItemViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewse
         list_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+    def finish_task(self,request,item_id):
+        try:
+            list_item = ListItem.objects.get(list__user=request.user,id=item_id)
+        except ListItem.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        list_item.done = True
+        list_item.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def unfinish_task(self,request,item_id):
+        try:
+            list_item = ListItem.objects.get(list__user=request.user,id=item_id)
+        except ListItem.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        list_item.done = False
+        list_item.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
         
 
         
