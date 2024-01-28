@@ -30,6 +30,30 @@ class ListViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.G
         
         serializer = ListSerializer(user_list)
         return Response(serializer.data)
+    
+    def put(self,request,list_id):
+        try:
+            user_list = List.objects.get(user=request.user,id=list_id)
+        except List.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ListSerializer(user_list,data=request.data,partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request,list_id):
+        try:
+            user_list = List.objects.get(user=request.user,id=list_id)
+        except List.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        user_list.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 
