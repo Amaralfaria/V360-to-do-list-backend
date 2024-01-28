@@ -17,6 +17,8 @@ class List(models.Model):
 class ListItem(models.Model):
     item_name = models.CharField(max_length=30)
     description = models.TextField()
+    done = models.BooleanField(default=False)
+    due_date = models.DateField(null=True)
     list = models.ForeignKey(List, on_delete=models.CASCADE,related_name='list_fk',null=False)
 
     class Meta:

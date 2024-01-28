@@ -99,6 +99,10 @@ class ListItemViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewse
         
         list_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+        
+
+        
 
 
 
