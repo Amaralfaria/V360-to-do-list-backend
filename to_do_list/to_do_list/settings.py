@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'user',
     'list',
 ]
@@ -52,6 +53,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200"
 ]
 
 ROOT_URLCONF = 'to_do_list.urls'
@@ -78,7 +85,7 @@ WSGI_APPLICATION = 'to_do_list.wsgi.application'
 AUTH_USER_MODEL = 'user.user'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
 

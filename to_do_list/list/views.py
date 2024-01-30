@@ -13,6 +13,17 @@ class ListViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.G
     permission_classes = [permissions.IsAuthenticated]
     # http_method_names = ['post']
 
+    def post(self,request):
+        data = request.data
+        data["user"] = request.user.id
+        serializer = ListSerializer(data=data)
+        if serializer.is_valid():
+            list = serializer.save()
+            list.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
     def get_user_lists(self, request):
         lists = List.objects.filter(user=request.user)
         serializer = ListSerializer(lists,many=True)
@@ -67,6 +78,17 @@ class ListItemViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewse
         return JsonResponse({
             "list_items":serializer.data
         }, status=status.HTTP_200_OK)
+    
+
+    def post(self,request):
+        serializer = ListItemSerializer(data=request.data)
+        if serializer.is_valid():
+            list_item = serializer.save()
+            list_item.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
     
     def get_item(self,request,item_id):
         try:
