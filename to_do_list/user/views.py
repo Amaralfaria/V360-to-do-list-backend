@@ -4,8 +4,10 @@ from rest_framework import mixins, viewsets, status
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import logout
 
 from user.models import User
+from list.models import List
 from user.serializers import UserSerializer
 
 class CreateUsuarioView(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -31,12 +33,19 @@ class LoginViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.
     http_method_names = ['post','get']
 
     def test_auth(self,request):
+        print(List.objects.get(list_name="teste post").__dict__)
         user = request.user
         print(user)
         return Response(status=status.HTTP_201_CREATED)
+    
+    def logout_user(self,request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+        
 
 
     def login(self,request):
+        print(request.data)
         email = request.data['email']
         password = request.data['password']
         print('Passados',email,password)

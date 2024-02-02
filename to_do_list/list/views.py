@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, viewsets, status
 from rest_framework import permissions
 from rest_framework.response import Response
-
+from datetime import date
 from list.models import List, ListItem
 from list.serializers import ListSerializer, ListItemSerializer
 
@@ -78,6 +78,17 @@ class ListItemViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewse
         return JsonResponse({
             "list_items":serializer.data
         }, status=status.HTTP_200_OK)
+    
+
+    def get_today_user_items(self,request):
+        list_items = ListItem.objects.filter(list__user=request.user,due_date=date.today())
+        serializer = ListItemSerializer(list_items,many=True)
+
+        return JsonResponse({
+            "list_items":serializer.data
+        }, status=status.HTTP_200_OK)
+
+
     
 
     def post(self,request):
